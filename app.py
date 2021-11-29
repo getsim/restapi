@@ -9,9 +9,12 @@ from recourses.user import UserRegister
 from recourses.item import Item, ItemList
 from recourses.store import Store, StoreList
 
+db_uri = os.environ.get('DATABASE_URL', 'sqlite:///data.db')
+if db_uri.startswith("postgres://"):
+    db_uri = db_uri.replace("postgres://", "postgresql://", 1)
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///data.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'george'
 api = Api(app)
